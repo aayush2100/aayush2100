@@ -1,0 +1,253 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #0c0c0c, #2a2a2a);
+  color: white;
+  text-align: center;
+}
+
+#game-container {
+  padding: 20px;
+}
+
+#game-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+#game-area {
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+  border: 5px solid white;
+  background: #222;
+  position: relative;
+  overflow: hidden;
+}
+
+#player {
+  width: 20px;
+  height: 20px;
+  background: yellow;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  border-radius: 50%;
+}
+
+.enemy {
+  width: 20px;
+  height: 20px;
+  background: red;
+  position: absolute;
+  border-radius: 50%;
+  animation: move-enemy 3s infinite linear;
+}
+
+.memory {
+  width: 15px;
+  height: 15px;
+  background: blue;
+  position: absolute;
+  border-radius: 50%;
+}
+
+#message {
+  margin: 20px 0;
+  font-size: 18px;
+}
+
+#restart-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#restart-btn:hover {
+  background: #555;
+}
+
+@keyframes move-enemy {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(200px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+<!---
+aayush2100/aayush2100 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+You can click the Preview link to take a look at your changes.
+--->
+const player = document.getElementById("player");
+const gameArea = document.getElementById("game-area");
+const enemies = document.querySelectorAll(".enemy");
+const memory = document.querySelector(".memory");
+const message = document.getElementById("message");
+let gameRunning = true;
+
+// Movement controls for the player
+document.addEventListener("keydown", (e) => {
+  if (!gameRunning) return;
+  const playerRect = player.getBoundingClientRect();
+  const gameAreaRect = gameArea.getBoundingClientRect();
+
+  switch (e.key) {
+    case "ArrowUp":
+      if (playerRect.top > gameAreaRect.top) {
+        player.style.top = player.offsetTop - 10 + "px";
+      }
+      break;
+    case "ArrowDown":
+      if (playerRect.bottom < gameAreaRect.bottom) {
+        player.style.top = player.offsetTop + 10 + "px";
+      }
+      break;
+    case "ArrowLeft":
+      if (playerRect.left > gameAreaRect.left) {
+        player.style.left = player.offsetLeft - 10 + "px";
+      }
+      break;
+    case "ArrowRight":
+      if (playerRect.right < gameAreaRect.right) {
+        player.style.left = player.offsetLeft + 10 + "px";
+      }
+      break;
+  }
+
+  checkCollision();
+});
+
+// Check collisions with enemies or memory
+function checkCollision() {
+  const playerRect = player.getBoundingClientRect();
+
+  enemies.forEach((enemy) => {
+    const enemyRect = enemy.getBoundingClientRect();
+    if (
+      playerRect.left < enemyRect.right &&
+      playerRect.right > enemyRect.left &&
+      playerRect.top < enemyRect.bottom &&
+      playerRect.bottom > enemyRect.top
+    ) {
+      endGame("Game Over! You were caught by an enemy.");
+    }
+  });
+
+  const memoryRect = memory.getBoundingClientRect();
+  if (
+    playerRect.left < memoryRect.right &&
+    playerRect.right > memoryRect.left &&
+    playerRect.top < memoryRect.bottom &&
+    playerRect.bottom > memoryRect.top
+  ) {
+    endGame("Congratulations! You found the memory.");
+  }
+}
+
+// End the game
+function endGame(msg) {
+  gameRunning = false;
+  message.textContent = msg;
+  message.style.color = msg.includes("Congratulations") ? "green" : "red";
+}
+
+// Restart the game
+function startGame() {
+  player.style.top = "10px";
+  player.style.left = "10px";
+  message.textContent = "Find the hidden memory and avoid the enemies!";
+  message.style.color = "white";
+  gameRunning = true;
+}
+
+const player = document.getElementById("player");
+const gameArea = document.getElementById("game-area");
+const enemies = document.querySelectorAll(".enemy");
+const memory = document.querySelector(".memory");
+const message = document.getElementById("message");
+let gameRunning = true;
+
+// Movement controls for the player
+document.addEventListener("keydown", (e) => {
+  if (!gameRunning) return;
+  const playerRect = player.getBoundingClientRect();
+  const gameAreaRect = gameArea.getBoundingClientRect();
+
+  switch (e.key) {
+    case "ArrowUp":
+      if (playerRect.top > gameAreaRect.top) {
+        player.style.top = player.offsetTop - 10 + "px";
+      }
+      break;
+    case "ArrowDown":
+      if (playerRect.bottom < gameAreaRect.bottom) {
+        player.style.top = player.offsetTop + 10 + "px";
+      }
+      break;
+    case "ArrowLeft":
+      if (playerRect.left > gameAreaRect.left) {
+        player.style.left = player.offsetLeft - 10 + "px";
+      }
+      break;
+    case "ArrowRight":
+      if (playerRect.right < gameAreaRect.right) {
+        player.style.left = player.offsetLeft + 10 + "px";
+      }
+      break;
+  }
+
+  checkCollision();
+});
+
+// Check collisions with enemies or memory
+function checkCollision() {
+  const playerRect = player.getBoundingClientRect();
+
+  enemies.forEach((enemy) => {
+    const enemyRect = enemy.getBoundingClientRect();
+    if (
+      playerRect.left < enemyRect.right &&
+      playerRect.right > enemyRect.left &&
+      playerRect.top < enemyRect.bottom &&
+      playerRect.bottom > enemyRect.top
+    ) {
+      endGame("Game Over! You were caught by an enemy.");
+    }
+  });
+
+  const memoryRect = memory.getBoundingClientRect();
+  if (
+    playerRect.left < memoryRect.right &&
+    playerRect.right > memoryRect.left &&
+    playerRect.top < memoryRect.bottom &&
+    playerRect.bottom > memoryRect.top
+  ) {
+    endGame("Congratulations! You found the memory.");
+  }
+}
+
+// End the game
+function endGame(msg) {
+  gameRunning = false;
+  message.textContent = msg;
+  message.style.color = msg.includes("Congratulations") ? "green" : "red";
+}
+
+// Restart the game
+function startGame() {
+  player.style.top = "10px";
+  player.style.left = "10px";
+  message.textContent = "Find the hidden memory and avoid the enemies!";
+  message.style.color = "white";
+  gameRunning = true;
+}
+                              
+                              
